@@ -51,19 +51,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </header>
 <main>
+    <div class="back">
     <div class="login-container">
-        <h2>MEMBER LOGIN</h2>
+        <h2>Create Account</h2>
         <?php if($error) { echo "<p class='error'>$error</p>"; } ?>
         <form method="POST" action="">
+
+           <input type="fname" name="fname" id="fname" required placeholder="Enter your First Name">
+
+           <input type="lname" name="lname" id="lname" required placeholder="Enter your Last Name">
+
+           <input type="age" name="age" id="age" required placeholder="Enter your Age">
+
+           <input type="address" name="address" id="address" required placeholder="Enter your Address">
             
-            <input type="email" name="email" id="email" required placeholder="Enter your email">
+            <input type="email" name="email" id="email" required placeholder="Enter your Email">
 
-           <input type="password" name="password" id="password" required placeholder="Enter your password">
+           <input type="password" name="password" id="password" required placeholder="Enter your Password">
 
-            <button type="submit" class="btn signin-btn">Sign In</button>
+          <input type="repassword" name="repassword" id="repassword" required placeholder="Re-enter your Password">
+
+            <button type="submit" class="btn signin-btn">Sign Up</button>
         </form>
         
-        <p>Don't have an account? <a href="register.php">Sign Up</a></p>
+        <p>If you have an account? <a href="login.php">Sign In</a></p>
 
         <!-- SOCIAL ICONS -->
             <div class="social-icons">
@@ -77,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="fab fa-google"></i>
                 </a>
             </div>
+    </div>
     </div>
 </main>
 
