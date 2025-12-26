@@ -31,17 +31,34 @@ session_start();
 </header>
 
 
-<!-- Hero Section -->
-<section class="hero">
-    <h1>Find Your Dream Job</h1>
-    <p>Admin-posted verified job opportunities</p>
-    <button onclick="goToJobs()">Browse Jobs</button>
-</section>
+
 
 <!-- Features -->
 <section class="features">
-    <h2>Our Features</h2>
+    <h2>Jobs</h2>
     <div class="features-container">
+    <div class="card clickable" onclick="openPopup('trustedJobsModal')">
+        <!-- Image -->
+        <img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&h=350"
+             alt="Trusted Jobs" class="modal-image">
+        <h3>Trusted Jobs</h3>
+        <p>Click to know more</p>
+    </div>
+
+    <div class="card clickable" onclick="openPopup('easyAppModal')">
+        <img src="https://images.pexels.com/photos/3183137/pexels-photo-3183137.jpeg?auto=compress&cs=tinysrgb&h=350" 
+     alt="Apply Online" class="modal-image">
+        <h3>Easy Application</h3>
+        <p>Apply online with your resume</p>
+    </div>
+
+    <div class="card clickable" onclick="openPopup('fastProcessModal')">
+        <img src="https://images.pexels.com/photos/3184293/pexels-photo-3184293.jpeg?auto=compress&cs=tinysrgb&h=350" 
+     alt="Fast Process" class="modal-image">
+        <h3>Fast Process</h3>
+        <p>Simple and quick recruitment system</p>
+    </div>
+
     <div class="card clickable" onclick="openPopup('trustedJobsModal')">
         <!-- Image -->
         <img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&h=350"

@@ -1,7 +1,8 @@
 // Redirect to jobs page
-function goToJobs() {
-    window.location.href = "jobseeker.php";
+function goToJobss() {
+    window.location.href = "jobseeker.php"; // redirect
 }
+
 
 // Simple alert for demo
 function showMessage() {

@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </header>
 <main>
     <div class="back">
-    <div class="login-container">
+    <div class="regis-container">
         <h2>Create Account</h2>
         <?php if($error) { echo "<p class='error'>$error</p>"; } ?>
         <form method="POST" action="">
@@ -60,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
            <input type="fname" name="fname" id="fname" required placeholder="Enter your First Name">
 
            <input type="lname" name="lname" id="lname" required placeholder="Enter your Last Name">
+
+           <input type="position" name="position" id="position" required placeholder="Enter your Position">
 
            <input type="age" name="age" id="age" required placeholder="Enter your Age">
 
@@ -71,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <input type="repassword" name="repassword" id="repassword" required placeholder="Re-enter your Password">
 
-            <button type="submit" class="btn signin-btn">Sign Up</button>
+            <button type="submit" class="btn signup-btn">Sign Up</button>
         </form>
         
         <p>If you have an account? <a href="login.php">Sign In</a></p>

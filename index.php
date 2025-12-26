@@ -35,7 +35,7 @@ session_start();
 <section class="hero">
     <h1>Find Your Dream Job</h1>
     <p>Admin-posted verified job opportunities</p>
-    <button onclick="goToJobs()">Browse Jobs</button>
+    <button type="button" onclick="goToJobss()">Browse Jobs</button>
 </section>
 
 <!-- Features -->

@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </header>
 <main>
+    
     <div class="login-container">
         <h2>MEMBER LOGIN</h2>
         <?php if($error) { echo "<p class='error'>$error</p>"; } ?>
