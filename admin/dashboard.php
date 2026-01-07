@@ -1,47 +1,34 @@
-<?php
-session_start();
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Job Recruitment System</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/script.js" defer></script>
-</head>
-<body>
-
-<header class="navbar">
-    <div class="logo">Job_Recruit</div>
-
-    <div class="right-side">
-        <a href="index.php" class="nav-link">Home</a>
-        <a href="jobseeker.php" class="nav-link">Jobs</a>
-
-        <?php if(isset($_SESSION['user_id'])) { ?>
-            <?php if($_SESSION['role'] == 'admin') { ?>
-                <a href="admin/dashboard.php" class="btn">Dashboard</a>
-            <?php } ?>
-            <a href="login.php" class="btn logout">Logout</a>
-        <?php } else { ?>
-            <a href="login.php" class="btn signin">Sign In</a>
-            <a href="register.php" class="btn signup">Sign Up</a>
-        <?php } ?>
-    </div>
-</header>
+<?php include '../web/header.php'; ?>
 
 
-<!-- Hero Section -->
-<section class="hero">
-    <h1>Find Your Dream Job</h1>
-    <p>Admin-posted verified job opportunities</p>
-    <button type="button" onclick="goToJobss()">Browse Jobs</button>
-</section>
+
 
 <!-- Features -->
 <section class="features">
-    <h2>Our Features</h2>
+    <h2>Jobs</h2>
     <div class="features-container">
+    <div class="card clickable" onclick="openPopup('trustedJobsModal')">
+        <!-- Image -->
+        <img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&h=350"
+             alt="Trusted Jobs" class="modal-image">
+        <h3>Trusted Jobs</h3>
+        <p>Click to know more</p>
+    </div>
+
+    <div class="card clickable" onclick="openPopup('easyAppModal')">
+        <img src="https://images.pexels.com/photos/3183137/pexels-photo-3183137.jpeg?auto=compress&cs=tinysrgb&h=350" 
+     alt="Apply Online" class="modal-image">
+        <h3>Easy Application</h3>
+        <p>Apply online with your resume</p>
+    </div>
+
+    <div class="card clickable" onclick="openPopup('fastProcessModal')">
+        <img src="https://images.pexels.com/photos/3184293/pexels-photo-3184293.jpeg?auto=compress&cs=tinysrgb&h=350" 
+     alt="Fast Process" class="modal-image">
+        <h3>Fast Process</h3>
+        <p>Simple and quick recruitment system</p>
+    </div>
+
     <div class="card clickable" onclick="openPopup('trustedJobsModal')">
         <!-- Image -->
         <img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&h=350"
@@ -115,10 +102,4 @@ session_start();
         <p>By automating key steps in the recruitment process, the system saves time for both applicants and recruiters, making hiring faster and simpler.</p>
     </div>
 </div>
-
-<footer>
-    <p>&copy; 2025 Job Recruitment System</p>
-</footer>
-
-</body>
-</html>
+<?php include '../web/footer.php'; ?>
