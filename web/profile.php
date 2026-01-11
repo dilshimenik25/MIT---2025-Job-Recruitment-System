@@ -1,13 +1,12 @@
 <?php
 session_start();
 
-// 🔒 Only allow logged-in normal users
+// Only logged-in normal users
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     header("Location: /job_recruitment/web/login.php");
     exit;
 }
 
-// Include header
 include 'header.php';
 
 $conn = new mysqli("localhost", "root", "", "job_recruitment");
@@ -15,12 +14,10 @@ if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
 
-// Initialize variables
 $seeker_id = $_SESSION['user_id'];
 $error = '';
 $success = '';
 
-// Fetch user data
 $sql = "SELECT firstname, lastname, position, age, address, email, password FROM jobseeker WHERE seeker_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $seeker_id);
@@ -28,9 +25,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
     $firstname = trim($_POST['firstname']);
     $lastname  = trim($_POST['lastname']);
     $position  = trim($_POST['position']);
@@ -38,10 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $address   = trim($_POST['address']);
     $email     = trim($_POST['email']);
 
-    // Keep the existing password
     $hashedPassword = $user['password'];
 
-    // Update user info
     $update_sql = "UPDATE jobseeker 
                    SET firstname=?, lastname=?, position=?, age=?, address=?, email=?, password=? 
                    WHERE seeker_id=?";
@@ -60,10 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($update_stmt->execute()) {
         $success = "Profile updated successfully!";
-        // Update session firstname/email
         $_SESSION['firstname'] = $firstname;
         $_SESSION['email'] = $email;
-        // Refresh user data
         $user['firstname'] = $firstname;
         $user['lastname'] = $lastname;
         $user['position'] = $position;
@@ -76,23 +67,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
+<link rel="stylesheet" href="unique-profile.css">
+
 <main>
-    <div class="profile-container">
-        <h2>Your Profile</h2>
+    <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
+    <div class="uprof-wrapper">
+        <div class="uprof-card">
+            <h2>Your Profile</h2>
 
-        <?php if ($error) { echo "<p class='error'>".htmlspecialchars($error)."</p>"; } ?>
-        <?php if ($success) { echo "<p class='success'>".htmlspecialchars($success)."</p>"; } ?>
+            <?php if ($error) { echo "<div class='uprof-error'>".htmlspecialchars($error)."</div>"; } ?>
+            <?php if ($success) { echo "<div class='uprof-success'>".htmlspecialchars($success)."</div>"; } ?>
 
-        <form method="POST" action="">
-            <input type="text" name="firstname" required placeholder="First Name" value="<?php echo htmlspecialchars($user['firstname']); ?>">
-            <input type="text" name="lastname" required placeholder="Last Name" value="<?php echo htmlspecialchars($user['lastname']); ?>">
-            <input type="text" name="position" required placeholder="Position" value="<?php echo htmlspecialchars($user['position']); ?>">
-            <input type="number" name="age" required placeholder="Age" value="<?php echo htmlspecialchars($user['age']); ?>">
-            <input type="text" name="address" required placeholder="Address" value="<?php echo htmlspecialchars($user['address']); ?>">
-            <input type="email" name="email" required placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>">
+            <form method="POST" action="">
+                <div class="uprof-group">
+                    <label>First Name</label>
+                    <input type="text" name="firstname" required value="<?php echo htmlspecialchars($user['firstname']); ?>">
+                </div>
 
-            <button type="submit" class="btn update-btn">Update Profile</button>
-        </form>
+                <div class="uprof-group">
+                    <label>Last Name</label>
+                    <input type="text" name="lastname" required value="<?php echo htmlspecialchars($user['lastname']); ?>">
+                </div>
+
+                <div class="uprof-group">
+                    <label>Position</label>
+                    <input type="text" name="position" required value="<?php echo htmlspecialchars($user['position']); ?>">
+                </div>
+
+                <div class="uprof-group">
+                    <label>Age</label>
+                    <input type="number" name="age" required value="<?php echo htmlspecialchars($user['age']); ?>">
+                </div>
+
+                <div class="uprof-group">
+                    <label>Address</label>
+                    <input type="text" name="address" required value="<?php echo htmlspecialchars($user['address']); ?>">
+                </div>
+
+                <div class="uprof-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required value="<?php echo htmlspecialchars($user['email']); ?>">
+                </div>
+
+                <button type="submit" class="uprof-btn">Update Profile</button>
+            </form>
+        </div>
     </div>
 </main>
 

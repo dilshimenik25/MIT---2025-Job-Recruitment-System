@@ -17,7 +17,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <body>
 
 <header class="navbar">
-    <div class="logo">Job_Recruit</div>
+    <div class="logo">
+        <!-- Logo image -->
+        <a href="/job_recruitment/web/index.php">
+            <img src="/job_recruitment/assets/images/logo.jpeg" alt="Job Recruit Logo" class="logo-img">
+            <!-- Optional text next to logo -->
+            <span>JOB_RECRUIT</span>
+        </a>
+    </div>
 
     <nav class="right-side">
 

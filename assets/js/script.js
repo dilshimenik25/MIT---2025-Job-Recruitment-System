@@ -55,3 +55,26 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+
+// Open View User popup and fetch user details
+function openViewPopup(userId) {
+    fetch('view_user.php?id=' + userId)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('popupBody').innerHTML = data;
+            document.getElementById('viewUserPopup').style.display = 'flex';
+        });
+}
+
+// Close the View User popup
+function closeViewPopup() {
+    document.getElementById('viewUserPopup').style.display = 'none';
+}
+
+// Close popup if clicked outside content
+window.addEventListener('click', function(event) {
+    const popup = document.getElementById('viewUserPopup');
+    if (event.target === popup) {
+        popup.style.display = 'none';
+    }
+});

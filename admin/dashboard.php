@@ -1,4 +1,14 @@
-<?php include '../web/header.php'; ?>
+<?php
+session_start();
+
+include '../web/header.php';
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /job_recruitment/login.php");
+    exit;
+}
+?>
+
 
 
 

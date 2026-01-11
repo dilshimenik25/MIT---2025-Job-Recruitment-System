@@ -15,28 +15,41 @@ include 'header.php';
 // Handle login form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $email = trim($_POST['email']);
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    if (empty($email) || empty($password)) {
+    if (empty($username) || empty($password)) {
         $error = "Please enter email and password!";
     } else {
 
         // 🔹 Hardcoded admin login
-        if ($email === 'admin@example.com' && $password === 'admin1234') {
+        if ($username === 'admin' && $password === 'admin1234') {
             $_SESSION['user_id'] = 0;
             $_SESSION['firstname'] = 'Admin';
+             $_SESSION['username'] = 'admin';
             $_SESSION['role'] = 'admin';
             header("Location: /job_recruitment/admin/dashboard.php");
             exit;
         }
 
+        // 🔹 Default ordinary user (required)
+     if ($username === 'uoc' && $password === 'uoc') {
+       $_SESSION['user_id'] = -1;
+       $_SESSION['firstname'] = 'UOC User';
+       $_SESSION['username'] = 'uoc';
+       $_SESSION['role'] = 'user';
+ 
+          header("Location: /job_recruitment/web/vacancy.php");
+      exit;
+      }
+
+
         // 🔹 Normal user login
-        $sql = "SELECT seeker_id, firstname, password FROM jobseeker WHERE email = ?";
+        $sql = "SELECT seeker_id, firstname, username, password FROM jobseeker WHERE username = ?";
         $stmt = $conn->prepare($sql);
         if ($stmt === false) die("Prepare failed: " . $conn->error);
 
-        $stmt->bind_param("s", $email);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -46,16 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['seeker_id'];
                 $_SESSION['firstname'] = $user['firstname'];
+                $_SESSION['username'] = $username; // ✅ added
                 $_SESSION['role'] = 'user'; // normal user
 
                 // Redirect to vacancies page
                 header("Location: /job_recruitment/web/vacancy.php");
                 exit;
             } else {
-                $error = "Invalid email or password!";
+                $error = "Invalid usename or password!";
             }
         } else {
-            $error = "Invalid email or password!";
+            $error = "Invalid username or password!";
         }
     }
 }
@@ -70,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php } ?>
 
         <form method="POST" action="">
-            <input type="email" name="email" required placeholder="Enter your email">
+            <input type="username" name="username" required placeholder="Enter your username">
             <input type="password" name="password" required placeholder="Enter your password">
             <button type="submit" class="btn signin-btn">Sign In</button>
         </form>
