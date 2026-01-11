@@ -28,7 +28,7 @@ if (!isset($_GET['id'])) {
 $id = intval($_GET['id']);
 
 // Fetch user data
-$stmt = $conn->prepare("SELECT firstname, lastname, email, position FROM jobseeker WHERE seeker_id = ?");
+$stmt = $conn->prepare("SELECT firstname, lastname, email, position, photo FROM jobseeker WHERE seeker_id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -47,20 +47,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email     = trim($_POST['email']);
     $position  = trim($_POST['position']);
 
-    // Optional: add email validation
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format!";
-    } else {
-        $stmt = $conn->prepare("UPDATE jobseeker SET firstname=?, lastname=?, email=?, position=? WHERE seeker_id=?");
-        $stmt->bind_param("ssssi", $firstname, $lastname, $email, $position, $id);
+    // Keep current photo by default
+    $photo = $user['photo'];
+
+    // Handle file upload
+    if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['profile_photo']['tmp_name'];
+        $fileName = $_FILES['profile_photo']['name'];
+        $fileSize = $_FILES['profile_photo']['size'];
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        $allowedExts = array('jpg','jpeg','png','gif');
+
+        if (in_array($fileExtension, $allowedExts) && $fileSize < 2*1024*1024) { // 2MB limit
+            $newFileName = $id . '_' . time() . '.' . $fileExtension;
+            $uploadFileDir = '../uploads/';
+
+            // Create uploads folder if it doesn't exist
+            if (!is_dir($uploadFileDir)) {
+                mkdir($uploadFileDir, 0755, true);
+            }
+
+            $dest_path = $uploadFileDir . $newFileName;
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                $photo = $newFileName; // update photo for DB
+            } else {
+                $error = "Error moving uploaded file. Check folder permissions.";
+            }
+        } else {
+            $error = "Invalid file type or size (max 2MB).";
+        }
+    }
+
+    // Only update DB if no error
+    if (!$error) {
+        $stmt = $conn->prepare("UPDATE jobseeker SET firstname=?, lastname=?, email=?, position=?, photo=? WHERE seeker_id=?");
+        $stmt->bind_param("sssssi", $firstname, $lastname, $email, $position, $photo, $id);
 
         if ($stmt->execute()) {
             $success = "User updated successfully!";
-            // Update local $user array to reflect changes
+            // Update local $user array so the new photo shows immediately
             $user['firstname'] = $firstname;
             $user['lastname']  = $lastname;
             $user['email']     = $email;
             $user['position']  = $position;
+            $user['photo']     = $photo;
         } else {
             $error = "Update failed: " . $conn->error;
         }
@@ -75,7 +107,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error) echo "<p class='error'>$error</p>"; ?>
         <?php if ($success) echo "<p class='success'>$success</p>"; ?>
 
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
+            <!-- Centered profile photo and file input -->
+            <div class="profile-photo-container">
+                <div class="profile-photo-preview">
+                    <?php if (!empty($user['photo'])): ?>
+                        <img src="../uploads/<?php echo htmlspecialchars($user['photo']); ?>" alt="Profile Photo" id="photoPreview">
+                    <?php else: ?>
+                        <img src="../uploads/default.png" alt="Profile Photo" id="photoPreview">
+                    <?php endif; ?>
+                </div>
+
+                <div class="profile-photo-input">
+                    <label>Upload Profile Photo:</label>
+                    <input type="file" name="profile_photo" accept="image/*" id="profilePhotoInput">
+                </div>
+            </div>
+
+            <!-- Other fields -->
             <label>Firstname:</label>
             <input type="text" name="firstname" value="<?php echo htmlspecialchars($user['firstname']); ?>" required>
 
@@ -88,10 +137,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label>Position:</label>
             <input type="text" name="position" value="<?php echo htmlspecialchars($user['position']); ?>" required>
 
-            <button type="submit" class="btn">Update</button>
+            <button type="submit" class="btn submit ">Update</button>
             <a href="user.php" class="btn cancel">Cancel</a>
         </form>
     </div>
 </main>
+
+<!-- CSS for circular photo and centered input -->
+
 
 <?php include '../web/footer.php'; ?>

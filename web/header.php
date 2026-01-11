@@ -58,6 +58,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <?php endif; ?>
             <a href="/job_recruitment/web/login.php" class="btn signin">Sign In</a>
             <a href="/job_recruitment/web/register.php" class="btn signup">Sign Up</a>
+            <a href="/job_recruitment/web/help.php" class="btn help">Help</a>
         <?php endif; ?>
 
     </nav>

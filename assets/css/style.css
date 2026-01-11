@@ -443,132 +443,119 @@ header .right-side .btn.signup {
     text-align: center;
 }
 
-/* ===========================
-   Profile Page Wrapper
-   =========================== */
-.uprof-wrapper {
+/* Wrapper background */
+.profile-wrapper {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    min-height: calc(100vh - 60px); /* adjust if navbar height */
-    background: linear-gradient(135deg, #ffffff, #c2e9fb); /* subtle gradient */
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #ffffff, #c2e9fb); 
 }
 
-/* ===========================
-   Profile Card Container
-   =========================== */
-.uprof-card {
+/* Card */
+.profile-card {
     width: 100%;
-    max-width: 520px;
-    padding: 40px;
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    transition: transform 0.3s;
-}
-
-.uprof-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Profile Heading */
-.uprof-card h2 {
-    font-size: 28px;
+    max-width: 550px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    padding: 30px 25px;
     text-align: center;
-    color: #2c3e50;
-    margin-bottom: 30px;
+    overflow-y: auto;
+    max-height: 90vh;
 }
 
-/* ===========================
-   Form Inputs
-   =========================== */
-.uprof-card .uprof-group {
-    margin-bottom: 20px;
-}
-
-.uprof-card .uprof-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
+/* Card title */
+.profile-card h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
     color: #333;
 }
 
-.uprof-card .uprof-group input {
-    
-    transition: all 0.3s;
+/* Error & Success */
+.profile-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.profile-success {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 
-     padding: 8px;
+/* Profile photo */
+.profile-photo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.profile-photo-preview img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4facfe;
     margin-bottom: 10px;
+}
+
+/* File input */
+.profile-photo-input label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+.profile-photo-input input[type="file"] {
+    padding: 5px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 500px;
-}
-
-.uprof-card .uprof-group input:focus {
-    border-color: #1abc9c;
-    box-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
-    outline: none;
-}
-
-/* ===========================
-   Update Button
-   =========================== */
-.uprof-card .uprof-btn {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(90deg, #1abc9c, #16a085);
     cursor: pointer;
-    transition: all 0.3s;
-    margin-top: 15px;
 }
 
-.uprof-card .uprof-btn:hover {
-    background: linear-gradient(90deg, #16a085, #1abc9c);
-}
-
-/* ===========================
-   Messages
-   =========================== */
-.uprof-card .uprof-success {
-    background-color: #e6ffed;
-    color: #2d7a34;
-    border-left: 5px solid #1abc9c;
-    padding: 10px 15px;
-    border-radius: 6px;
+/* Input groups */
+.profile-group {
+    text-align: left;
     margin-bottom: 15px;
-    font-weight: 500;
+}
+.profile-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+.profile-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: 0.3s;
+}
+.profile-group input:focus {
+    border-color: #4facfe;
+    outline: none;
+    box-shadow: 0 0 5px rgba(79, 172, 254, 0.5);
 }
 
-.uprof-card .uprof-error {
-    background-color: #ffe6e6;
-    color: #c62828;
-    border-left: 5px solid #e74c3c;
-    padding: 10px 15px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    font-weight: 500;
+/* Button */
+.profile-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1abc9c;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
 }
-
-/* ===========================
-   Responsive
-   =========================== */
-@media (max-width: 600px) {
-    .uprof-card {
-        padding: 30px 20px;
-        margin: 20px;
-    }
-
-    .uprof-card h2 {
-        font-size: 24px;
-    }
-
+.profile-btn:hover {
+    background:  #1abc9c;
 }
 
 /* Simple styling */
@@ -764,14 +751,21 @@ header .right-side .btn.signup {
 .user-view-row span {
     font-weight: 600;
     color: #555;
-    width: 40%;
 }
 
 .user-view-row p {
     margin: 0;
     color: #222;
-    width: 60%;
-    text-align: right;
+}
+
+
+.user-view-photo img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4facfe;
+    margin-bottom: 20px;
 }
 
 
@@ -833,3 +827,213 @@ header .right-side .btn.signup {
     background: #007bff;
     color: white;
 }
+
+/* Edit_User*/
+
+/* Container */
+.edit-user-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Heading */
+.edit-user-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 26px;
+}
+
+/* Labels */
+.edit-user-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Inputs */
+.edit-user-container input[type="text"],
+.edit-user-container input[type="email"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.edit-user-container input[type="text"]:focus,
+.edit-user-container input[type="email"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Buttons */
+.edit-user-container .btn.submit {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.edit-user-container .btn:hover {
+    background-color: #45a049;
+}
+
+.edit-user-container .btn.cancel {
+    background-color: #f44336;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    margin-right: 10px;
+    display: inline-block;
+    padding: 12px 25px;
+}
+
+.edit-user-container .btn.cancel:hover {
+    background-color: #e53935;
+}
+
+/* Messages */
+.edit-user-container .error {
+    background-color: #fdecea;
+    color: #d93025;
+    padding: 10px 15px;
+    border-left: 5px solid #d93025;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.edit-user-container .success {
+    background-color: #e6f4ea;
+    color: #188038;
+    padding: 10px 15px;
+    border-left: 5px solid #188038;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .edit-user-container {
+        padding: 20px;
+        margin: 20px;
+    }
+    .edit-user-container h2 {
+        font-size: 22px;
+    }
+}
+
+.profile-photo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-photo-preview img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+.profile-photo-input label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.profile-photo-input input[type="file"] {
+    display: inline-block;
+}
+
+/*help*/
+.help-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #ffffff, #c2e9fb); /* subtle gradient */
+}
+
+.help-card {
+    width: 100%;
+    max-width: 700px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    padding: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.help-card h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.help-card .intro {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.accordion-item {
+    margin-bottom: 15px;
+}
+
+.accordion-btn {
+    width: 100%;
+    background:  #1abc9c;;
+    color: #fff;
+    cursor: pointer;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.accordion-btn:hover {
+    background:  #1abc9c;;
+}
+
+.accordion-content {
+    background: #f5f8ff;
+    overflow: hidden;
+    display: none; /* hide by default */
+    padding: 15px 20px;
+    border-left: 4px solid  #1abc9c;;
+    border-radius: 0 0 10px 10px;
+}
+
+.accordion-content p {
+    margin: 0;
+}
+
+.accordion-content a {
+    color:  #1abc9c;;
+    text-decoration: none;
+}
+.accordion-content a:hover {
+    text-decoration: underline;
+}
+

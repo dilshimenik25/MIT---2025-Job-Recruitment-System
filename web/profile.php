@@ -18,13 +18,15 @@ $seeker_id = $_SESSION['user_id'];
 $error = '';
 $success = '';
 
-$sql = "SELECT firstname, lastname, position, age, address, email, password FROM jobseeker WHERE seeker_id = ?";
+// Fetch user data
+$sql = "SELECT firstname, lastname, position, age, address, email, password, photo FROM jobseeker WHERE seeker_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $seeker_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $firstname = trim($_POST['firstname']);
     $lastname  = trim($_POST['lastname']);
@@ -33,86 +35,136 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $address   = trim($_POST['address']);
     $email     = trim($_POST['email']);
 
-    $hashedPassword = $user['password'];
+    $photo = $user['photo']; // keep current photo
 
-    $update_sql = "UPDATE jobseeker 
-                   SET firstname=?, lastname=?, position=?, age=?, address=?, email=?, password=? 
-                   WHERE seeker_id=?";
-    $update_stmt = $conn->prepare($update_sql);
-    $update_stmt->bind_param(
-        "sssisssi",
-        $firstname,
-        $lastname,
-        $position,
-        $age,
-        $address,
-        $email,
-        $hashedPassword,
-        $seeker_id
-    );
+    // Handle profile photo upload
+    if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['profile_photo']['tmp_name'];
+        $fileName = $_FILES['profile_photo']['name'];
+        $fileSize = $_FILES['profile_photo']['size'];
+        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-    if ($update_stmt->execute()) {
-        $success = "Profile updated successfully!";
-        $_SESSION['firstname'] = $firstname;
-        $_SESSION['email'] = $email;
-        $user['firstname'] = $firstname;
-        $user['lastname'] = $lastname;
-        $user['position'] = $position;
-        $user['age'] = $age;
-        $user['address'] = $address;
-        $user['email'] = $email;
-    } else {
-        $error = "Update failed!";
+        $allowedExts = array('jpg','jpeg','png','gif');
+
+        if (in_array($fileExt, $allowedExts) && $fileSize < 2*1024*1024) { // 2MB limit
+            $newFileName = $seeker_id . '_' . time() . '.' . $fileExt;
+            $uploadDir = 'uploads/';
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $dest_path = $uploadDir . $newFileName;
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                $photo = $newFileName; // update photo for DB
+            } else {
+                $error = "Error moving uploaded file. Check folder permissions.";
+            }
+        } else {
+            $error = "Invalid file type or size (max 2MB).";
+        }
+    }
+
+    // Update database if no error
+    if (!$error) {
+        $hashedPassword = $user['password']; // keep old password
+        $update_sql = "UPDATE jobseeker 
+                       SET firstname=?, lastname=?, position=?, age=?, address=?, email=?, password=?, photo=? 
+                       WHERE seeker_id=?";
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param(
+            "sssissssi",
+            $firstname,
+            $lastname,
+            $position,
+            $age,
+            $address,
+            $email,
+            $hashedPassword,
+            $photo,
+            $seeker_id
+        );
+
+        if ($update_stmt->execute()) {
+            $success = "Profile updated successfully!";
+            $_SESSION['firstname'] = $firstname;
+            $_SESSION['email'] = $email;
+
+            // Update local user array for display
+            $user['firstname'] = $firstname;
+            $user['lastname']  = $lastname;
+            $user['position']  = $position;
+            $user['age']       = $age;
+            $user['address']   = $address;
+            $user['email']     = $email;
+            $user['photo']     = $photo;
+        } else {
+            $error = "Update failed!";
+        }
     }
 }
 ?>
 
-<link rel="stylesheet" href="unique-profile.css">
-
 <main>
-    <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
-    <div class="uprof-wrapper">
-        <div class="uprof-card">
+    <div class="profile-wrapper">
+        <div class="profile-card">
             <h2>Your Profile</h2>
 
-            <?php if ($error) { echo "<div class='uprof-error'>".htmlspecialchars($error)."</div>"; } ?>
-            <?php if ($success) { echo "<div class='uprof-success'>".htmlspecialchars($success)."</div>"; } ?>
+            <?php if ($error) { echo "<div class='profile-error'>".htmlspecialchars($error)."</div>"; } ?>
+            <?php if ($success) { echo "<div class='profile-success'>".htmlspecialchars($success)."</div>"; } ?>
 
-            <form method="POST" action="">
-                <div class="uprof-group">
+            <form method="POST" action="" enctype="multipart/form-data">
+                <div class="profile-photo-container">
+                    <div class="profile-photo-preview">
+                        <?php if (!empty($user['photo'])): ?>
+                            <img src="uploads/<?php echo htmlspecialchars($user['photo']); ?>" alt="Profile Photo" id="userPhotoPreview">
+                        <?php else: ?>
+                            <img src="uploads/default.png" alt="Profile Photo" id="userPhotoPreview">
+                        <?php endif; ?>
+                    </div>
+                    <div class="profile-photo-input">
+                        <label>Upload Profile Photo</label>
+                        <input type="file" name="profile_photo" accept="image/*" id="userPhotoInput">
+                    </div>
+                </div>
+
+                <div class="profile-group">
                     <label>First Name</label>
-                    <input type="text" name="firstname" required value="<?php echo htmlspecialchars($user['firstname']); ?>">
+                    <input type="text" name="firstname" value="<?php echo htmlspecialchars($user['firstname']); ?>" required>
                 </div>
 
-                <div class="uprof-group">
+                <div class="profile-group">
                     <label>Last Name</label>
-                    <input type="text" name="lastname" required value="<?php echo htmlspecialchars($user['lastname']); ?>">
+                    <input type="text" name="lastname" value="<?php echo htmlspecialchars($user['lastname']); ?>" required>
                 </div>
 
-                <div class="uprof-group">
+                <div class="profile-group">
                     <label>Position</label>
-                    <input type="text" name="position" required value="<?php echo htmlspecialchars($user['position']); ?>">
+                    <input type="text" name="position" value="<?php echo htmlspecialchars($user['position']); ?>" required>
                 </div>
 
-                <div class="uprof-group">
+                <div class="profile-group">
                     <label>Age</label>
-                    <input type="number" name="age" required value="<?php echo htmlspecialchars($user['age']); ?>">
+                    <input type="number" name="age" value="<?php echo htmlspecialchars($user['age']); ?>" required>
                 </div>
 
-                <div class="uprof-group">
+                <div class="profile-group">
                     <label>Address</label>
-                    <input type="text" name="address" required value="<?php echo htmlspecialchars($user['address']); ?>">
+                    <input type="text" name="address" value="<?php echo htmlspecialchars($user['address']); ?>" required>
                 </div>
 
-                <div class="uprof-group">
+                <div class="profile-group">
                     <label>Email</label>
-                    <input type="email" name="email" required value="<?php echo htmlspecialchars($user['email']); ?>">
+                    <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                 </div>
 
-                <button type="submit" class="uprof-btn">Update Profile</button>
+                <button type="submit" class="profile-btn">Update Profile</button>
             </form>
         </div>
     </div>
 </main>
+
+
 
 <?php include 'footer.php'; ?>
