@@ -41,7 +41,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     }
 }
 ?>
-
+<main>
 <div class="editjob-container">
     <h1 class="editjob-header">Edit Job</h1>
 
@@ -64,85 +64,16 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
             <textarea name="description" id="description"><?= htmlspecialchars($job['description']) ?></textarea>
         </div>
 
-        <div class="editjob-group">
-            <label for="closing_date">Closing Date</label>
-            <input type="date" name="closing_date" id="closing_date" value="<?= $job['closing_date'] ?>">
-        </div>
+       <div class="editjob-group">
+    <label for="closing_date">Closing Date</label>
+    <input type="date" name="closing_date" id="closing_date" value="<?= date('Y-m-d', strtotime($job['closing_date'])) ?>">
+</div>
 
         <button type="submit" class="editjob-btn">Update Job</button>
-        <a href="dashboard.php" class="editjob-btn editjob-cancel">Cancel</a>
+     
     </form>
 </div>
 
-<style>
-.editjob-container {
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-.editjob-header {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #4f46e5;
-}
-.editjob-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-.editjob-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-}
-.editjob-group input, .editjob-group textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-.editjob-group textarea {
-    min-height: 120px;
-}
-.editjob-btn {
-    padding: 10px 20px;
-    background: #4f46e5;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s;
-}
-.editjob-btn:hover {
-    background: #4338ca;
-}
-.editjob-cancel {
-    text-decoration: none;
-    display: inline-block;
-    background: #e0e0e0;
-    color: #333;
-    margin-left: 10px;
-}
-.editjob-success {
-    background: #d1fae5;
-    color: #065f46;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-}
-.editjob-error {
-    background: #fee2e2;
-    color: #b91c1c;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-}
-</style>
+    </main>
 
 <?php include '../web/footer.php'; ?>

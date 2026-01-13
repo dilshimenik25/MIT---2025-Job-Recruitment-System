@@ -28,7 +28,7 @@ if (!isset($_GET['id'])) {
 $id = intval($_GET['id']);
 
 // Fetch user data
-$stmt = $conn->prepare("SELECT firstname, lastname, email, position, photo FROM jobseeker WHERE seeker_id = ?");
+$stmt = $conn->prepare("SELECT firstname, lastname, email, position, age, address, photo FROM jobseeker WHERE seeker_id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -46,10 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lastname  = trim($_POST['lastname']);
     $email     = trim($_POST['email']);
     $position  = trim($_POST['position']);
+    $age  = trim($_POST['age']);
+    $address  = trim($_POST['address']);
 
     // Keep current photo by default
-    $photo = $user['photo'];
-
+   // $photo = $user['photo'];
+/*
     // Handle file upload
     if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['profile_photo']['tmp_name'];
@@ -71,32 +73,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dest_path = $uploadFileDir . $newFileName;
 
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                $photo = $newFileName; // update photo for DB
-            } else {
+
+               // DELETE OLD PHOTO (if exists)
+                if (!empty($user['photo']) && file_exists('../uploads/' . $user['photo'])) {
+                unlink('../uploads/' . $user['photo']);
+                }
+
+                $photo = $newFileName;
+                }
+            
+            else {
                 $error = "Error moving uploaded file. Check folder permissions.";
             }
         } else {
             $error = "Invalid file type or size (max 2MB).";
         }
-    }
+    }*/
 
     // Only update DB if no error
-    if (!$error) {
-        $stmt = $conn->prepare("UPDATE jobseeker SET firstname=?, lastname=?, email=?, position=?, photo=? WHERE seeker_id=?");
-        $stmt->bind_param("sssssi", $firstname, $lastname, $email, $position, $photo, $id);
+ if (!$error) {
+    $stmt = $conn->prepare(
+        "UPDATE jobseeker 
+         SET firstname=?, lastname=?, email=?, position=?, age=?, address=?, photo=? 
+         WHERE seeker_id=?"
+    );
 
-        if ($stmt->execute()) {
-            $success = "User updated successfully!";
-            // Update local $user array so the new photo shows immediately
-            $user['firstname'] = $firstname;
-            $user['lastname']  = $lastname;
-            $user['email']     = $email;
-            $user['position']  = $position;
-            $user['photo']     = $photo;
-        } else {
-            $error = "Update failed: " . $conn->error;
-        }
-    }
+    $stmt->bind_param(
+        "ssssissi",
+        $firstname,
+        $lastname,
+        $email,
+        $position,
+        $age,
+        $address,
+        $photo,
+        $id
+    );
+
+    $stmt->execute();
+}
 }
 ?>
 
@@ -109,21 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="POST" action="" enctype="multipart/form-data">
             <!-- Centered profile photo and file input -->
-            <div class="profile-photo-container">
-                <div class="profile-photo-preview">
-                    <?php if (!empty($user['photo'])): ?>
-                        <img src="../uploads/<?php echo htmlspecialchars($user['photo']); ?>" alt="Profile Photo" id="photoPreview">
-                    <?php else: ?>
-                        <img src="../uploads/default.png" alt="Profile Photo" id="photoPreview">
-                    <?php endif; ?>
-                </div>
-
-                <div class="profile-photo-input">
-                    <label>Upload Profile Photo:</label>
-                    <input type="file" name="profile_photo" accept="image/*" id="profilePhotoInput">
-                </div>
-            </div>
-
+          
             <!-- Other fields -->
             <label>Firstname:</label>
             <input type="text" name="firstname" value="<?php echo htmlspecialchars($user['firstname']); ?>" required>
@@ -136,6 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label>Position:</label>
             <input type="text" name="position" value="<?php echo htmlspecialchars($user['position']); ?>" required>
+
+            <label>Age:</label>
+            <input type="text" name="age" value="<?php echo htmlspecialchars($user['age']); ?>" required>
+
+            <label>Address:</label>
+            <input type="text" name="address" value="<?php echo htmlspecialchars($user['address']); ?>" required>
 
             <button type="submit" class="btn submit ">Update</button>
             <a href="user.php" class="btn cancel">Cancel</a>

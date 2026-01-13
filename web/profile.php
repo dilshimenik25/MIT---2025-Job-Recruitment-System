@@ -19,30 +19,53 @@ $error = '';
 $success = '';
 
 // Fetch user data
-$sql = "SELECT firstname, lastname, position, age, address, email, password, photo FROM jobseeker WHERE seeker_id = ?";
+$sql = "SELECT firstname, lastname, position, age, address, email, password, photo 
+        FROM jobseeker 
+        WHERE seeker_id = ?";
 $stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("Prepare failed (fetch user): " . $conn->error);
+}
+
 $stmt->bind_param("i", $seeker_id);
 $stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$stmt->store_result(); // prevent "commands out of sync"
+$stmt->bind_result($firstname, $lastname, $position, $age, $address, $email, $password, $photo);
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($stmt->fetch()) {
+    $user = array(
+        'firstname' => $firstname,
+        'lastname'  => $lastname,
+        'position'  => $position,
+        'age'       => $age,
+        'address'   => $address,
+        'email'     => $email,
+        'password'  => $password,
+        'photo'     => $photo
+    );
+} else {
+    $user = null;
+}
+$stmt->close();
+
+// Handle profile update
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Get form input safely
     $firstname = trim($_POST['firstname']);
     $lastname  = trim($_POST['lastname']);
     $position  = trim($_POST['position']);
-    $age       = trim($_POST['age']);
+    $age       = intval($_POST['age']);
     $address   = trim($_POST['address']);
     $email     = trim($_POST['email']);
-
-    $photo = $user['photo']; // keep current photo
+    $hashedPassword = $user['password']; // keep old password
 
     // Handle profile photo upload
     if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['profile_photo']['tmp_name'];
-        $fileName = $_FILES['profile_photo']['name'];
-        $fileSize = $_FILES['profile_photo']['size'];
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $fileName    = $_FILES['profile_photo']['name'];
+        $fileSize    = $_FILES['profile_photo']['size'];
+        $fileExt     = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
         $allowedExts = array('jpg','jpeg','png','gif');
 
@@ -57,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $dest_path = $uploadDir . $newFileName;
 
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                $photo = $newFileName; // update photo for DB
+                $photo = $newFileName;
             } else {
                 $error = "Error moving uploaded file. Check folder permissions.";
             }
@@ -68,11 +91,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Update database if no error
     if (!$error) {
-        $hashedPassword = $user['password']; // keep old password
         $update_sql = "UPDATE jobseeker 
                        SET firstname=?, lastname=?, position=?, age=?, address=?, email=?, password=?, photo=? 
                        WHERE seeker_id=?";
         $update_stmt = $conn->prepare($update_sql);
+        if (!$update_stmt) {
+            die("Prepare failed (update user): " . $conn->error);
+        }
+
         $update_stmt->bind_param(
             "sssissssi",
             $firstname,
@@ -100,10 +126,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $user['email']     = $email;
             $user['photo']     = $photo;
         } else {
-            $error = "Update failed!";
+            $error = "Update failed: " . $update_stmt->error;
         }
+
+        $update_stmt->close();
     }
 }
+
 ?>
 
 <main>
@@ -164,7 +193,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     </div>
 </main>
-
-
 
 <?php include 'footer.php'; ?>

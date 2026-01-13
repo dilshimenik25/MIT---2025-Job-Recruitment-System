@@ -33,10 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // 🔹 Default ordinary user (required)
-     if ($username === 'uoc' && $password === 'uoc') {
+     if ($username === 'uocc' && $password === 'uocc'){
        $_SESSION['user_id'] = -1;
-       $_SESSION['firstname'] = 'UOC User';
-       $_SESSION['username'] = 'uoc';
+       $_SESSION['firstname'] = 'UOCCUser';
+       $_SESSION['username'] = 'uocc';
        $_SESSION['role'] = 'user';
  
           header("Location: /job_recruitment/web/vacancy.php");

@@ -19,7 +19,11 @@ if (isset($_GET['toggle_job'])) {
     $result = $conn->query("SELECT is_visible FROM jobs WHERE job_id=$job_id");
     if ($result && $row = $result->fetch_assoc()) {
         $new_status = $row['is_visible'] ? 0 : 1;
-        $conn->query("UPDATE jobs SET is_visible=$new_status WHERE job_id=$job_id");
+        $conn->query("
+    UPDATE jobs 
+    SET is_visible = 0 
+    WHERE closing_date = CURDATE() AND is_visible = 1
+");
     }
     // reload page after toggle
     header("Location: dashboard.php");
@@ -29,7 +33,7 @@ if (isset($_GET['toggle_job'])) {
 
 
 // Hide expired jobs automatically
-//$conn->query("UPDATE jobs SET is_visible=0 WHERE closing_date < CURDATE()");
+$conn->query("UPDATE jobs SET is_visible=0 WHERE closing_date < CURDATE()");
 
 // Stats
 // Total jobs
@@ -108,12 +112,27 @@ $jobs_chart = $conn->query("SELECT job_id, title FROM jobs");
                 $is_visible = isset($job['is_visible']) ? $job['is_visible'] : 0;
 
                 // Get JD downloads count
-                $downloads = 0;
-                $res = $conn->query("SELECT COUNT(*) AS cnt FROM jd_downloads WHERE job_id=$job_id");
-                if ($res) {
-                    $row = $res->fetch_assoc();
-                    $downloads = isset($row['cnt']) ? intval($row['cnt']) : 0;
-                }
+// Fetch all download counts at once
+$downloads_res = $conn->query("
+    SELECT job_id, COUNT(*) AS cnt 
+    FROM jd_downloads 
+    GROUP BY job_id
+");
+
+$downloads_count = array(); // old PHP compatible
+if ($downloads_res) {
+    while ($row = $downloads_res->fetch_assoc()) {
+        $downloads_count[intval($row['job_id'])] = intval($row['cnt']);
+    }
+}
+
+// Then in your jobs loop
+$downloads = isset($downloads_count[$job_id]) ? $downloads_count[$job_id] : 0;
+
+
+// Then in your jobs loop
+$downloads = isset($downloads_count[$job_id]) ? $downloads_count[$job_id] : 0;
+
             ?>
             <tr>
                 <td><?= $job_id ?></td>

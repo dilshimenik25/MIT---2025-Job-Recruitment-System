@@ -566,7 +566,8 @@ header .right-side .btn.signup {
 .admin-actions a {
     display: inline-block;
     padding: 8px 15px;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-left: 10px;
     background: #007bff;
     color: #fff;
     text-decoration: none;
@@ -582,12 +583,19 @@ header .right-side .btn.signup {
     border-collapse: collapse;
     margin-top: 10px;
     padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .users-table th, .users-table td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.users-table tr{
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -860,7 +868,7 @@ header .right-side .btn.signup {
 /* Inputs */
 .edit-user-container input[type="text"],
 .edit-user-container input[type="email"] {
-    width: 100%;
+    width: 470px;
     padding: 12px 15px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -888,14 +896,16 @@ header .right-side .btn.signup {
     transition: background-color 0.3s;
     text-decoration: none;
     margin-right: 10px;
+    height: 45px;
 }
 
 .edit-user-container .btn:hover {
     background-color: #45a049;
 }
-
 .edit-user-container .btn.cancel {
     background-color: #f44336;
+     display: inline-block;
+    padding: 12px 25px;
     color: #fff;
     font-weight: 600;
     border: none;
@@ -904,8 +914,7 @@ header .right-side .btn.signup {
     transition: background-color 0.3s;
     text-decoration: none;
     margin-right: 10px;
-    display: inline-block;
-    padding: 12px 25px;
+    height: 10;
 }
 
 .edit-user-container .btn.cancel:hover {
@@ -918,15 +927,15 @@ header .right-side .btn.signup {
     color: #d93025;
     padding: 10px 15px;
     border-left: 5px solid #d93025;
-    margin-bottom: 15px;
+    margin-bottom: 1px;
     border-radius: 5px;
 }
 
 .edit-user-container .success {
     background-color: #e6f4ea;
-    color: #188038;
+    color: #115e59;;
     padding: 10px 15px;
-    border-left: 5px solid #188038;
+    border-left: 5px solid #115e59;;
     margin-bottom: 15px;
     border-radius: 5px;
 }
@@ -1059,8 +1068,8 @@ header .right-side .btn.signup {
 
 
 .vac-left h3 {text-align: center;}
-.vac-root { background: linear-gradient(135deg, #ffffff, #c2e9fb);flex: 1;  font-family:'Poppins',sans-serif; margin:0; padding:0; }
-.vac-container { max-width:1200px; margin:40px auto; display:flex; gap:25px; flex: 1; }
+.vac-root { background: linear-gradient(135deg, #ffffff, #c2e9fb);  font-family:'Poppins',sans-serif; margin:0; padding:0; }
+.vac-container { max-width:1200px; margin:40px auto; display:flex; gap:25px; }
 .vac-left { flex:1 1 60%; }
 .vac-card { background:#fff; border-radius:12px; padding:18px; margin-bottom:20px; box-shadow:0 6px 15px rgba(0,0,0,0.05); }
 .vac-title { font-size:18px; font-weight:600; color:#0f172a; margin-bottom:6px; }
@@ -1075,10 +1084,10 @@ header .right-side .btn.signup {
 .vac-btn-apply:hover { background:#115e59; }
 .vac-btn-download { background:#2563eb; color:#fff; }
 .vac-btn-download:hover { background:#1e40af; }
-.vac-right { flex:1 1 35%; background:#fff; border-radius:12px; padding:20px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+.vac-right { flex:1 1 35%;  border-radius:12px; padding:20px; }
 .vac-right h3 { color:#0f172a; margin-bottom:15px; }
-.vac-right table { width:100%; border-collapse:collapse; }
-.vac-right th, .vac-right td { border:1px solid #e5e7eb; padding:10px; text-align:left; }
+.vac-right table { width:100%; border-collapse:collapse; background-color: #fff; border-radius:12px;}
+.vac-right th, .vac-right td { border:1px solid #fff; padding:10px; text-align:left; }
 .vac-right th { background:#0f766e; color:#fff; }
 .vac-right td a { color:#2563eb; text-decoration:none; }
 .vac-remove-btn { padding:4px 8px; background:#dc2626; color:#fff; border:none; border-radius:4px; cursor:pointer; }
@@ -1288,71 +1297,75 @@ header .right-side .btn.signup {
 }
 
 /* ====== Edit Job Page Styles ====== */
-.editjob-container{
-    max-width:600px;
-    margin:40px auto;
-    padding:30px;
-    background:#fff;
-    border-radius:10px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    font-family:Arial, sans-serif;
+.editjob-container {
+    width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background: #fff;
+
 }
-.editjob-header{
-    text-align:center;
-    margin-bottom:25px;
-    font-size:28px;
-    color:#4f46e5;
+.editjob-header {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #000
 }
-.editjob-form .editjob-group{
-    margin-bottom:15px;
+.editjob-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
-.editjob-form label{
-    display:block;
-    margin-bottom:5px;
-    font-weight:bold;
-    color:#333;
+.editjob-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
 }
-.editjob-form input[type="text"],
-.editjob-form input[type="date"],
-.editjob-form textarea{
-    width:100%;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
-    font-size:16px;
-    box-sizing:border-box;
+.editjob-group input, .editjob-group textarea {
+    width: 680px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
 }
-.editjob-form textarea{
-    min-height:120px;
-    resize:vertical;
+.editjob-group textarea {
+    min-height: 120px;
 }
-.editjob-btn{
-    background:#4f46e5;
-    color:#fff;
-    padding:10px 20px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:16px;
-    margin-right:10px;
-    transition:0.3s;
-    text-decoration:none;
-    display:inline-block;
+.editjob-btn {
+    padding: 10px 20px;
+    background: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+  
 }
-.editjob-btn:hover{
-    background:#3730a3;
+.editjob-btn:hover {
+    background: #1abc9c;
 }
-.editjob-cancel{
-    background:#ccc;
-    color:#333;
+.editjob-cancel {
+    text-decoration: none;
+    display: inline-block;
+    background: #e0e0e0;
+    color: #333;
+    margin-left: 10px;
+    width: 50px;
 }
-.editjob-success{
-    background:#d1fae5;
-    color:#065f46;
-    border:1px solid #10b981;
-    padding:10px 15px;
-    border-radius:6px;
-    margin-bottom:20px;
-    text-align:center;
-    font-weight:bold;
+.editjob-success {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
 }
+.editjob-error {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+

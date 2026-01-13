@@ -32,12 +32,7 @@ $adminUserPhoto = !empty($adminUser['photo']) ? $adminUser['photo'] : 'default.p
 ?>
 
 <div class="user-view-card">
-<!-- Profile Photo -->
-    <div class="user-view-photo">
-        <img src="../uploads/<?php echo htmlspecialchars($adminUserPhoto); ?>" alt="Profile Photo">
-    </div>
 
-    <!-- User Info -->
     <!-- User Info -->
     <div class="user-view-row">
         <span>Firstname</span>

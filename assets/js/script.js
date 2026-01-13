@@ -138,3 +138,10 @@ function toggleDesc(btn){
         desc.scrollIntoView({behavior:'smooth'});
     }
 }
+document.getElementById('profilePhotoInput').addEventListener('change', function(e) {
+    const reader = new FileReader();
+    reader.onload = () => {
+        document.getElementById('photoPreview').src = reader.result;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+});
