@@ -112,3 +112,29 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     });
 });
+
+/*jobseeker*/
+function filterJobsSeek(){
+    let search = document.getElementById('jobseekSearchInput').value.toLowerCase();
+    let loc = document.getElementById('jobseekLocationFilter').value;
+    document.querySelectorAll('.jobseek-card').forEach(job=>{
+        let t = job.getAttribute('data-title');
+        let l = job.getAttribute('data-location');
+        job.style.display = (t.includes(search) && (loc=="" || loc==l)) ? 'block' : 'none';
+    });
+}
+function clearFiltersSeek(){
+    document.getElementById('jobseekSearchInput').value="";
+    document.getElementById('jobseekLocationFilter').value="";
+    filterJobsSeek();
+}
+
+function toggleDesc(btn){
+    let desc = btn.closest('.vac-card').querySelector('.vac-desc');
+    if(desc.style.display=='block'){
+        desc.style.display='none';
+    } else {
+        desc.style.display='block';
+        desc.scrollIntoView({behavior:'smooth'});
+    }
+}

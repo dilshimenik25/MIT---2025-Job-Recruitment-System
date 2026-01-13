@@ -192,7 +192,7 @@ header .right-side .btn.signup {
 }*/
 .features {
     padding: 30px 20px;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #ffffff, #c2e9fb);
     text-align: center;
 }
 
@@ -1037,3 +1037,322 @@ header .right-side .btn.signup {
     text-decoration: underline;
 }
 
+/*jobseeker*/
+.jobseek-body { background: linear-gradient(135deg, #ffffff, #c2e9fb); font-family:'Poppins',sans-serif; margin:0; padding:0; }
+.jobseek-container { max-width:1200px; margin:40px auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:25px; }
+
+.jobseek-card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 6px 20px rgba(0,0,0,0.05); transition:0.3s; display:flex; flex-direction:column; justify-content:space-between; }
+.jobseek-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
+
+.jobseek-title { font-size:18px; color:#0f172a; font-weight:600; margin-bottom:8px; }
+.jobseek-location { font-size:14px; color:#64748b; margin-bottom:12px; }
+.jobseek-salary { font-size:14px; color:#0f766e; font-weight:500; margin-bottom:12px; }
+
+.jobseek-desc { display:none; background:#f9fafb; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px; }
+.jobseek-btn { padding:10px 18px; border:none; border-radius:8px; background:#0f766e; color:#fff; font-weight:500; cursor:pointer; transition:0.3s; text-align:center; text-decoration:none; display:inline-block; }
+.jobseek-btn:hover { background:#115e59; }
+
+.jobseek-search { margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; }
+.jobseek-search input, .jobseek-search select { padding:10px 12px; border-radius:8px; border:1px solid #cbd5e1; flex:1; min-width:140px; }
+.jobseek-clear { padding:10px 18px; border:none; border-radius:8px; background:#e2e8f0; color:#0f172a; cursor:pointer; }
+.jobseek-clear:hover { background:#cbd5e1; }
+
+
+.vac-left h3 {text-align: center;}
+.vac-root { background: linear-gradient(135deg, #ffffff, #c2e9fb);flex: 1;  font-family:'Poppins',sans-serif; margin:0; padding:0; }
+.vac-container { max-width:1200px; margin:40px auto; display:flex; gap:25px; flex: 1; }
+.vac-left { flex:1 1 60%; }
+.vac-card { background:#fff; border-radius:12px; padding:18px; margin-bottom:20px; box-shadow:0 6px 15px rgba(0,0,0,0.05); }
+.vac-title { font-size:18px; font-weight:600; color:#0f172a; margin-bottom:6px; }
+.vac-meta { font-size:14px; color:#64748b; margin-bottom:12px; }
+.vac-desc { display:none; margin-top:10px; background:#f9fafb; border:1px solid #cbd5e1; border-radius:8px; padding:12px; }
+.vac-cvform input[type="file"] { margin-bottom:10px; }
+.vac-cvform button { padding:8px 16px; border:none; border-radius:6px; background:#0f766e; color:#fff; cursor:pointer; }
+.vac-cvform button:hover { background:#115e59; }
+.vac-actions { margin-top:10px; display:flex; gap:10px; }
+.vac-btn { padding:8px 16px; border:none; border-radius:6px; font-size:14px; cursor:pointer; }
+.vac-btn-apply { background:#0f766e; color:#fff; }
+.vac-btn-apply:hover { background:#115e59; }
+.vac-btn-download { background:#2563eb; color:#fff; }
+.vac-btn-download:hover { background:#1e40af; }
+.vac-right { flex:1 1 35%; background:#fff; border-radius:12px; padding:20px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+.vac-right h3 { color:#0f172a; margin-bottom:15px; }
+.vac-right table { width:100%; border-collapse:collapse; }
+.vac-right th, .vac-right td { border:1px solid #e5e7eb; padding:10px; text-align:left; }
+.vac-right th { background:#0f766e; color:#fff; }
+.vac-right td a { color:#2563eb; text-decoration:none; }
+.vac-remove-btn { padding:4px 8px; background:#dc2626; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+
+
+/* AddJob Scoped Styles */
+.addjob-wrapper {
+    font-family: 'Poppins', sans-serif;
+    padding: 40px 20px;
+    flex: 1;  
+    background: linear-gradient(135deg, #ffffff, #c2e9fb);
+}
+
+.addjob-container {
+    max-width: 700px;
+    margin: auto;
+}
+
+.addjob-header {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    color: #000;
+    margin-bottom: 25px;
+}
+
+.addjob-error {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.addjob-error p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.addjob-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+.addjob-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.addjob-group {
+    margin-bottom: 20px;
+}
+
+.addjob-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.addjob-input {
+    width: 95%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.addjob-input:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+.addjob-checkbox label {
+    font-weight: 500;
+}
+
+.addjob-btn {
+    background: #1abc9c;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.addjob-btn:hover {
+    background: #1e40af;
+}
+
+@media (max-width: 600px) {
+    .addjob-card {
+        padding: 20px;
+    }
+}
+
+
+.dash-main-container {
+    width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #ffffff, #c2e9fb);
+}
+
+/* ===== Header ===== */
+.dash-main-header {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #000;
+}
+
+/* ===== Stats Cards ===== */
+.dash-stats-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.dash-card-stats {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dash-card-stats h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #111827;
+}
+
+.dash-card-stats p {
+    margin: 0;
+    color: #6b7280;
+}
+
+/* ===== Cards ===== */
+.dash-card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== Buttons ===== */
+.dash-btn {
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+}
+
+.dash-btn-add {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+.dash-btn-toggle {
+    background-color: #10b981;
+    color: #fff;
+}
+
+.dash-btn-delete {
+    background-color: #ef4444;
+    color: #fff;
+}
+
+/* ===== Tables ===== */
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dash-table th, .dash-table td {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.dash-btn-edit { background:#f59e0b; color:#fff; } 
+.dash-btn-edit:hover { background:#d97706; }
+
+.dash-table th {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.dash-table tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+/* ===== Chart ===== */
+.dash-chart-container {
+    margin-top: 20px;
+}
+
+/* ====== Edit Job Page Styles ====== */
+.editjob-container{
+    max-width:600px;
+    margin:40px auto;
+    padding:30px;
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    font-family:Arial, sans-serif;
+}
+.editjob-header{
+    text-align:center;
+    margin-bottom:25px;
+    font-size:28px;
+    color:#4f46e5;
+}
+.editjob-form .editjob-group{
+    margin-bottom:15px;
+}
+.editjob-form label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+    color:#333;
+}
+.editjob-form input[type="text"],
+.editjob-form input[type="date"],
+.editjob-form textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:16px;
+    box-sizing:border-box;
+}
+.editjob-form textarea{
+    min-height:120px;
+    resize:vertical;
+}
+.editjob-btn{
+    background:#4f46e5;
+    color:#fff;
+    padding:10px 20px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+    margin-right:10px;
+    transition:0.3s;
+    text-decoration:none;
+    display:inline-block;
+}
+.editjob-btn:hover{
+    background:#3730a3;
+}
+.editjob-cancel{
+    background:#ccc;
+    color:#333;
+}
+.editjob-success{
+    background:#d1fae5;
+    color:#065f46;
+    border:1px solid #10b981;
+    padding:10px 15px;
+    border-radius:6px;
+    margin-bottom:20px;
+    text-align:center;
+    font-weight:bold;
+}

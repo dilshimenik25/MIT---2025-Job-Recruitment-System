@@ -62,9 +62,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['username'] = $username; // ✅ added
                 $_SESSION['role'] = 'user'; // normal user
 
-                // Redirect to vacancies page
-                header("Location: /job_recruitment/web/vacancy.php");
-                exit;
+                // Redirect to vacancy.php, if a job was selected
+                $redirectJobId = isset($_SESSION['selected_job_id']) ? $_SESSION['selected_job_id'] : '';
+                if($redirectJobId){
+                    header("Location: vacancy.php?job_id=$redirectJobId");
+                    unset($_SESSION['selected_job_id']);
+                } else {
+                    header("Location: vacancy.php");
+                }
             } else {
                 $error = "Invalid usename or password!";
             }
