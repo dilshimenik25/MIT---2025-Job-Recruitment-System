@@ -1369,3 +1369,45 @@ header .right-side .btn.signup {
     margin-bottom: 15px;
 }
 
+.btn-edit { background:#2563EB; color:#fff; padding:4px 8px; text-decoration:none; border-radius:4px; }
+.btn-delete { background:#DC2626; color:#fff; padding:4px 8px; text-decoration:none; border-radius:4px; }
+
+.vu-wrapper { max-width: 500px; margin: 40px auto; font-family: Arial,sans-serif; }
+.vu-card { background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+.vu-title { text-align:center; color:#000; margin-bottom:20px; }
+.vu-info { display:flex; flex-direction:column; gap:12px; }
+.vu-row { display:flex; justify-content:space-between; padding:8px 12px; background:#f9f9f9; border-radius:6px; border-left:4px solid #34af63; }
+.vu-row span { font-weight:bold; color:#333; }
+.vu-row p { margin:0; color:#555; }
+.vu-back-btn { text-align:center; margin-top:20px; }
+.vu-back-btn a { text-decoration:none; color:#fff; background:#39dda4; padding:8px 16px; border-radius:6px; }
+.vu-back-btn a:hover { opacity:0.9; }
+
+/* ---------- Dashboard Styles ---------- */
+.dashboard-container { width:90%; margin:20px auto; font-family:Arial,sans-serif; }
+.dashboard-header { text-align:center; margin-bottom:30px; font-size:2em; color:#333; }
+.dashboard-stats { display:flex; justify-content:space-between; margin-bottom:30px; }
+.stat-card { flex:1; margin:0 10px; padding:20px; border-radius:8px; color:#fff; text-align:center; box-shadow:0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
+.stat-card:hover { transform: translateY(-5px); }
+.stat-card h3 { font-size:2em; margin-bottom:5px; }
+.stat-card.blue { background:#4F46E5; }
+.stat-card.green { background:#16A34A; }
+.stat-card.orange { background:#F97316; }
+
+.add-job { margin-bottom:20px; }
+.btn { padding:8px 16px; border:none; border-radius:5px; cursor:pointer; transition:0.2s; }
+.btn:hover { opacity:0.85; }
+.btn-add { background:#4F46E5; color:#fff; }
+.btn-toggle { background:#6B7280; color:#fff; }
+.btn-edit { background:#FBBF24; color:#fff; }
+.btn-delete { background:#DC2626; color:#fff; }
+
+.table-container { margin-bottom:30px; overflow-x:auto; }
+.dashboard-table { width:100%; border-collapse:collapse; }
+.dashboard-table th, .dashboard-table td { border:1px solid #ddd; padding:12px; text-align:left; }
+.dashboard-table th { background:#f3f4f6; }
+.dashboard-table tr:hover { background:#f9fafb; }
+
+.text-center { text-align:center; }
+
+.chart-container { margin-top:30px; padding:20px; border:1px solid #ddd; border-radius:8px; }

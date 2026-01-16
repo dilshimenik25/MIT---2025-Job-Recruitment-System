@@ -145,3 +145,4 @@ document.getElementById('profilePhotoInput').addEventListener('change', function
     };
     reader.readAsDataURL(e.target.files[0]);
 });
+

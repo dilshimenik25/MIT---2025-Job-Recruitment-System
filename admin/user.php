@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-// Restrict access to admin only
+// Admin access only
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: /job_recruitment/web/login.php");
     exit;
 }
 
-include '../web/header.php'; // adjust path based on your structure
+include '../web/header.php';
 
 $conn = new mysqli("localhost", "root", "", "job_recruitment");
 if ($conn->connect_error) {
@@ -25,14 +25,14 @@ if (isset($_GET['delete_id'])) {
 }
 
 // Fetch all users
-$result = $conn->query("SELECT seeker_id, firstname, lastname, position, age, address, email FROM jobseeker ORDER BY seeker_id DESC");
+$result = $conn->query("SELECT seeker_id, firstname, lastname, position, age, address, email, photo FROM jobseeker ORDER BY seeker_id DESC");
 ?>
 
 <main>
     <div class="admin-users">
         <h2>Registered Users</h2>
 
-        <!-- Admin Actions: Add User & Reports -->
+        <!-- Admin Actions -->
         <div class="admin-actions">
             <a class="btn-add" href="add_user.php">Add New User</a>
             <a class="btn-reports" href="reports.php">Reports</a>
@@ -56,18 +56,18 @@ $result = $conn->query("SELECT seeker_id, firstname, lastname, position, age, ad
                     <?php if ($result->num_rows > 0): ?>
                         <?php while ($user = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $user['seeker_id']; ?></td>
-                                <td><?php echo htmlspecialchars($user['firstname']); ?></td>
-                                <td><?php echo htmlspecialchars($user['lastname']); ?></td>
-                                <td><?php echo htmlspecialchars($user['position']); ?></td>
-                                 <td><?php echo htmlspecialchars($user['age']); ?></td>
-                                  <td><?php echo htmlspecialchars($user['address']); ?></td>
-                                   <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                <td class="action-buttons">
-                                    <a class="btn-edit" href="edit_user.php?id=<?php echo $user['seeker_id']; ?>">Edit</a>
-                                     <a class="btn-view" href="#" onclick="openViewPopup(<?php echo $user['seeker_id']; ?>)">View</a>
-                                    <a class="btn-delete"
-                                       href="user.php?delete_id=<?php echo $user['seeker_id']; ?>"
+                                <td><?= $user['seeker_id'] ?></td>
+                                <td><?= htmlspecialchars($user['firstname']) ?></td>
+                                <td><?= htmlspecialchars($user['lastname']) ?></td>
+                                <td><?= htmlspecialchars($user['position']) ?></td>
+                                <td><?= htmlspecialchars($user['age']) ?></td>
+                                <td><?= htmlspecialchars($user['address']) ?></td>
+                                <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td>
+                                    <!-- View opens a normal page -->
+                                    <a class="btn-view" href="view_user.php?id=<?= $user['seeker_id'] ?>">View</a>
+                                    <a class="btn-edit" href="edit_user.php?id=<?= $user['seeker_id'] ?>">Edit</a>
+                                    <a class="btn-delete" href="user.php?delete_id=<?= $user['seeker_id'] ?>"
                                        onclick="return confirm('Are you sure you want to delete this user?');">
                                        Delete
                                     </a>
@@ -75,9 +75,7 @@ $result = $conn->query("SELECT seeker_id, firstname, lastname, position, age, ad
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
-                            <td colspan="6" style="text-align:center;">No users found.</td>
-                        </tr>
+                        <tr><td colspan="9" style="text-align:center;">No users found.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -85,17 +83,6 @@ $result = $conn->query("SELECT seeker_id, firstname, lastname, position, age, ad
     </div>
 </main>
 
-<!-- View User Popup -->
-<div id="viewUserPopup" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeViewPopup()">&times;</span>
-        <h3>User Details</h3>
-        <div id="popupBody">
-            <!-- User details will load here via AJAX -->
-        </div>
-    </div>
-</div>
-
-
 
 <?php include '../web/footer.php'; ?>
+
