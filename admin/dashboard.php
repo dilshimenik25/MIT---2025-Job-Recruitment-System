@@ -30,6 +30,24 @@ if (isset($_GET['toggle_job'])) {
     exit;
 }
 
+/* ---------------- DELETE JOB ---------------- */
+if (isset($_GET['delete_job'])) {
+    $job_id = (int)$_GET['delete_job'];
+
+    // Delete related applications
+    $stmt = $conn->prepare("DELETE FROM applications WHERE job_id = ?");
+    $stmt->bind_param("i", $job_id);
+    $stmt->execute();
+
+    // Delete job
+    $stmt = $conn->prepare("DELETE FROM jobs WHERE job_id = ?");
+    $stmt->bind_param("i", $job_id);
+    $stmt->execute();
+
+    header("Location: dashboard.php");
+    exit;
+}
+
 /* ---------------- DELETE APPLICATION ---------------- */
 if (isset($_GET['delete_application'])) {
     $app_id = (int)$_GET['delete_application'];
@@ -44,16 +62,13 @@ if (isset($_GET['delete_application'])) {
 $conn->query("UPDATE jobs SET is_visible = 0 WHERE closing_date < CURDATE()");
 
 /* ---------------- DASHBOARD STATS ---------------- */
-$res = $conn->query("SELECT COUNT(*) c FROM jobs");
-$row = $res ? $res->fetch_assoc() : null;
+$row = $conn->query("SELECT COUNT(*) c FROM jobs")->fetch_assoc();
 $total_jobs = $row ? (int)$row['c'] : 0;
 
-$res = $conn->query("SELECT COUNT(*) c FROM applications");
-$row = $res ? $res->fetch_assoc() : null;
+$row = $conn->query("SELECT COUNT(*) c FROM applications")->fetch_assoc();
 $total_apps = $row ? (int)$row['c'] : 0;
 
-$res = $conn->query("SELECT COUNT(*) c FROM jd_downloads");
-$row = $res ? $res->fetch_assoc() : null;
+$row = $conn->query("SELECT COUNT(*) c FROM jd_downloads")->fetch_assoc();
 $total_downloads = $row ? (int)$row['c'] : 0;
 
 /* ---------------- FETCH JOBS ---------------- */
@@ -83,14 +98,15 @@ while ($r = $res->fetch_assoc()) {
 
 $labels = array();
 $data = array();
-$jobs_chart = $conn->query("SELECT job_id, title FROM jobs");
-while ($j = $jobs_chart->fetch_assoc()) {
+$res = $conn->query("SELECT job_id, title FROM jobs");
+while ($j = $res->fetch_assoc()) {
     $labels[] = $j['title'];
     $jid = (int)$j['job_id'];
     $data[] = isset($app_counts[$jid]) ? $app_counts[$jid] : 0;
 }
 ?>
 
+<!-- ====== DASHBOARD HTML ====== -->
 <main>
 <div class="dashboard-container">
 
@@ -128,8 +144,9 @@ while ($j = $jobs_chart->fetch_assoc()) {
     <th>Visible</th>
     <th>Actions</th>
 </tr>
+
 <?php if ($jobs_result->num_rows): ?>
-<?php while ($job = $jobs_result->fetch_assoc()):
+<?php while ($job = $jobs_result->fetch_assoc()): 
     $jid = (int)$job['job_id'];
 ?>
 <tr>
@@ -138,14 +155,18 @@ while ($j = $jobs_chart->fetch_assoc()) {
     <td><?= isset($downloads_count[$jid]) ? $downloads_count[$jid] : 0 ?></td>
     <td><?= $job['is_visible'] ? 'Yes' : 'No' ?></td>
     <td>
-        <a href="?toggle_job=<?= $jid ?>"><button class="btn btn-toggle">Toggle</button></a>
-        <a href="edit_job.php?job_id=<?= $jid ?>"><button class="btn btn-edit">Edit</button></a>
+        <a href="?toggle_job=<?= $jid ?>" class="btn btn-toggle">Toggle</a>
+        <a href="view_job.php?job_id=<?= $jid ?>" class="btn btn-view">View</a>
+        <a href="edit_job.php?job_id=<?= $jid ?>" class="btn btn-edit">Edit</a>
+        <a href="?delete_job=<?= $jid ?>" class="btn btn-delete"
+           onclick="return confirm('Delete this job and all related applications?')">Delete</a>
     </td>
 </tr>
 <?php endwhile; ?>
 <?php else: ?>
 <tr><td colspan="5" class="text-center">No jobs found</td></tr>
 <?php endif; ?>
+
 </table>
 </div>
 
@@ -160,6 +181,7 @@ while ($j = $jobs_chart->fetch_assoc()) {
     <th>Email</th>
     <th>Actions</th>
 </tr>
+
 <?php if ($apps_result->num_rows): ?>
 <?php while ($a = $apps_result->fetch_assoc()): ?>
 <tr>
@@ -168,15 +190,15 @@ while ($j = $jobs_chart->fetch_assoc()) {
     <td><?= htmlspecialchars($a['firstname'].' '.$a['lastname']) ?></td>
     <td><?= htmlspecialchars($a['email']) ?></td>
     <td>
-        <a href="?delete_application=<?= $a['id'] ?>" onclick="return confirm('Delete this application?')">
-            <button class="btn btn-delete">Delete</button>
-        </a>
+        <a href="?delete_application=<?= $a['id'] ?>" class="btn btn-delete"
+           onclick="return confirm('Delete this application?')">Delete</a>
     </td>
 </tr>
 <?php endwhile; ?>
 <?php else: ?>
 <tr><td colspan="5" class="text-center">No applications found</td></tr>
 <?php endif; ?>
+
 </table>
 </div>
 
@@ -189,23 +211,26 @@ while ($j = $jobs_chart->fetch_assoc()) {
 </div>
 </main>
 
-
 <script>
 var canvas = document.getElementById('jobsChart');
 var ctx = canvas.getContext('2d');
 var labels = <?= json_encode($labels) ?>;
 var data = <?= json_encode($data) ?>;
-var max = Math.max.apply(null, data);
+var max = Math.max.apply(null, data) || 1;
 var barWidth = 80;
 var gap = 38;
-for(var i=0;i<data.length;i++){
-    var x = i*(barWidth+gap)+50;
-    var y = canvas.height - (data[i]/max)*(canvas.height-50);
+
+for (var i = 0; i < data.length; i++) {
+    var x = i * (barWidth + gap) + 50;
+    var h = (data[i] / max) * (canvas.height - 60);
+    var y = canvas.height - h - 30;
+
     ctx.fillStyle = '#4F46E5';
-    ctx.fillRect(x, y, barWidth, (data[i]/max)*(canvas.height-50));
+    ctx.fillRect(x, y, barWidth, h);
+
     ctx.fillStyle = '#000';
-    ctx.fillText(labels[i], x, canvas.height-5);
-    ctx.fillText(data[i], x, y-5);
+    ctx.fillText(labels[i], x, canvas.height - 10);
+    ctx.fillText(data[i], x + 30, y - 5);
 }
 </script>
 

@@ -1411,3 +1411,58 @@ header .right-side .btn.signup {
 .text-center { text-align:center; }
 
 .chart-container { margin-top:30px; padding:20px; border:1px solid #ddd; border-radius:8px; }
+
+
+.viewjob-container {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 700px;
+    margin: 40px auto;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.viewjob-header {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #111827;
+    text-align: center;
+}
+
+.viewjob-group {
+    margin-bottom: 20px;
+}
+
+.viewjob-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #374151;
+}
+
+.viewjob-value {
+    padding: 10px;
+    background: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.viewjob-back {
+    text-align: center;  /* Center the content */
+    margin-top: 30px;
+}
+
+.viewjob-back .btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #1abc9c;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.viewjob-back .btn-back:hover {
+    background:#1abc9c;
+}
